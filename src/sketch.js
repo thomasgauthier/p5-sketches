@@ -1,20 +1,10 @@
 import p5 from "p5"
-import TextToSVG from 'text-to-svg/src/index';
 const containerElement = document.getElementById('p5-container');
-
 
 let poses = []
 
-let textToSVG = undefined;
-
-
 function fillPoses(str, offset = { x: 0, y: 0 }) {
-
-    if (!textToSVG) {
-        return;
-    }
-
-    const svg = textToSVG.getSVG(str);
+    const svg = ascii[str.charCodeAt(0)]
 
     const parser = new DOMParser();
 
@@ -36,9 +26,7 @@ function fillPoses(str, offset = { x: 0, y: 0 }) {
     }
 }
 
-TextToSVG.load('fonts/HyperFont.otf', (err, t) => {
-    textToSVG = t;
-});
+
 /**
  * 
  * @param {p5} p 
@@ -71,6 +59,7 @@ const sketch = (p) => {
 
     p.mousePressed = () => {
         dotPositions.push({ x: p.mouseX, y: p.mouseY });
+        console.log(dotPositions);
     }
 
     p.mouseDragged = () => {
@@ -80,18 +69,31 @@ const sketch = (p) => {
     p.draw = () => {
         p.background(220);
 
-        for (let i = poses.length; dotPositions.length && i < dotPositions.length; i++) {
-            dotPositions[i] = { x: dotPositions[i].x, y: dotPositions[i].y + Math.sin((p.frameCount + i) / 60) * HOVERITENSITY };
+        let sadjasdh = Math.random();
+
+        for (let i = 0; dotPositions.length && i < dotPositions.length; i++) {
+            if (i >= poses.length || dotPositions[i].done) {
+                const done = dotPositions[i].done;
+                dotPositions[i] = { x: dotPositions[i].x, y: dotPositions[i].y + Math.sin((p.frameCount + i) / 60) * HOVERITENSITY };
+
+                if (done) {
+                    dotPositions[i].done = true;
+                }
+            }
         }
 
         const max = Math.min(poses.length, dotPositions.length);
         for (let i = 0; i < max; i++) {
+            if (dotPositions[i].done) {
+                continue
+            }
+
             const toOrigin = p.createVector(poses[i].x, poses[i].y).sub(dotPositions[i].x, dotPositions[i].y);
 
             const move = dotSpeed * p.deltaTime;
 
             if (toOrigin.mag() < move) {
-                dotPositions[i] = { x: poses[i].x, y: poses[i].y }
+                dotPositions[i] = { x: poses[i].x, y: poses[i].y, done: true }
                 continue;
             }
 
