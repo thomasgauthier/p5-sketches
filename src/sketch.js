@@ -53,6 +53,14 @@ const sketch = (p) => {
     let numberOfBRs = 0;
     let lineLength = 0;
 
+    let sprite;
+
+    let canonX = 0;
+    let cannonGoBack = false;
+    let cannonSpeed = 0.5;
+
+    let debit = 2;
+
     const dotPositions = new Array()
     Object.defineProperty(dotPositions, 'last', {
         get: function () {
@@ -60,13 +68,13 @@ const sketch = (p) => {
         }
     });
 
+    p.preload = () => {
+        sprite = p.loadImage('images/pipe.png');
+    }
+
     p.setup = () => {
         p.createCanvas(800, 600);
         p.background(220);
-
-        for (let i = 0; i < 1000; i++) {
-            dotPositions.push({ x: Math.random() * p.width, y: Math.random() * p.height })
-        }
     }
 
     p.mousePressed = () => {
@@ -79,6 +87,24 @@ const sketch = (p) => {
 
     p.draw = () => {
         p.background(220);
+
+        canonX += p.deltaTime * cannonSpeed * (cannonGoBack ? -1 : 1);
+
+        if (canonX > p.width) {
+            cannonGoBack = true;
+        }
+
+        if (canonX < 0) {
+            cannonGoBack = false;
+        }
+
+        p.image(sprite, canonX, p.height - sprite.height * 0.35);
+
+        if (poses.length > dotPositions.length) {
+            for (let i = 0; i < debit; i++) {
+                dotPositions.push({ x: canonX + 24, y: p.height });
+            }
+        }
 
         for (let i = poses.length; dotPositions.length && i < dotPositions.length; i++) {
             dotPositions[i] = { x: dotPositions[i].x, y: dotPositions[i].y + Math.sin((p.frameCount + i) / 60) * HOVERITENSITY };
