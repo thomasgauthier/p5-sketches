@@ -36,7 +36,7 @@ function fillPoses(str, offset = { x: 0, y: 0 }) {
     }
 }
 
-TextToSVG.load('/fonts/HyperFont.otf', (err, t) => {
+TextToSVG.load('fonts/HyperFont.otf', (err, t) => {
     textToSVG = t;
 });
 /**
