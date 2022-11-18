@@ -1,0 +1,27 @@
+{
+  "name": "textball",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild --bundle src/index.js --outdir=dist --minify --sourcemap",
+    "dev": "nodemon --watch src -e ts,js --exec \"node build.mjs\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "p5": "^1.5.0",
+    "path": "^0.12.7",
+    "process": "^0.11.10",
+    "text-to-svg": "^3.1.5"
+  },
+  "devDependencies": {
+    "@types/p5": "^1.4.3",
+    "esbuild": "^0.15.14",
+    "esbuild-plugin-alias": "^0.2.1",
+    "nodemon": "^2.0.20"
+  }
+}
