@@ -59,7 +59,6 @@ const sketch = (p) => {
 
     p.mousePressed = () => {
         dotPositions.push({ x: p.mouseX, y: p.mouseY });
-        console.log(dotPositions);
     }
 
     p.mouseDragged = () => {
@@ -68,8 +67,6 @@ const sketch = (p) => {
 
     p.draw = () => {
         p.background(220);
-
-        let sadjasdh = Math.random();
 
         for (let i = 0; dotPositions.length && i < dotPositions.length; i++) {
             if (i >= poses.length || dotPositions[i].done) {
